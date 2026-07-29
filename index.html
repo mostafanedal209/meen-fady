@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مين فاضي دلوقتي؟</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scene">
+
+  <!-- ============ HOME VIEW ============ -->
+  <main class="card" id="homeView">
+    <div class="emoji-big">👥</div>
+    <h1>مين فاضي دلوقتي؟</h1>
+    <p class="tagline">اعمل أوضة لشلتك، وشوفوا مين فاضي فعلاً من غير ما تستنوا رد حد</p>
+
+    <button class="btn-primary" id="createRoomBtn" type="button">اعمل أوضة جديدة</button>
+
+    <div class="divider"><span>أو</span></div>
+
+    <input type="text" id="joinCodeInput" placeholder="اكتب كود الأوضة">
+    <button class="btn-secondary" id="joinRoomBtn" type="button">دخول لأوضة موجودة</button>
+  </main>
+
+  <!-- ============ NAME ENTRY VIEW ============ -->
+  <main class="card hidden" id="nameView">
+    <div class="emoji-big">👋</div>
+    <h2>اسمك إيه؟</h2>
+    <p class="tagline small">هنفتكره عشان مش تكتبه تاني في نفس الجهاز ده</p>
+    <input type="text" id="nameInput" placeholder="اسمك">
+    <button class="btn-primary" id="saveNameBtn" type="button">كمّل</button>
+  </main>
+
+  <!-- ============ ROOM VIEW ============ -->
+  <main class="room hidden" id="roomView">
+
+    <div class="room-header">
+      <div>
+        <span class="room-label">أوضة</span>
+        <div class="room-code-row">
+          <span class="room-code" id="roomCodeDisplay">------</span>
+          <button class="icon-btn" id="copyLinkBtn" type="button" title="انسخ اللينك">🔗</button>
+        </div>
+        <span class="copy-feedback hidden" id="copyFeedback">اتنسخ اللينك! ابعته لشلتك</span>
+      </div>
+      <button class="notif-btn hidden" id="notifBtn" type="button">🔔 فعّل التنبيهات</button>
+    </div>
+
+    <div class="card status-card">
+      <p class="hello-msg">أهلاً <strong id="myNameDisplay"></strong> 👋</p>
+
+      <div class="hidden" id="imFreeState">
+        <div class="free-badge">
+          <p class="free-title">إنت فاضي دلوقتي 🙋</p>
+          <p class="free-activity" id="myActivityDisplay"></p>
+          <p class="free-timer" id="myTimerDisplay"></p>
+          <button class="link-btn" id="endFreeBtn" type="button">مش فاضي دلوقتي</button>
+        </div>
+      </div>
+
+      <button class="btn-cta" id="openFreeFormBtn" type="button">أنا فاضي دلوقتي 🙋</button>
+
+      <div class="free-form hidden" id="freeForm">
+        <p class="form-label">لمدة قد إيه؟</p>
+        <div class="duration-row">
+          <button class="chip-btn duration-chip" data-mins="15" type="button">15 د</button>
+          <button class="chip-btn duration-chip" data-mins="30" type="button">30 د</button>
+          <button class="chip-btn duration-chip" data-mins="60" type="button">60 د</button>
+        </div>
+        <input type="number" id="customDurationInput" placeholder="أو اكتب مدة تانية بالدقيقة">
+
+        <p class="form-label">عايز تعمل إيه؟ (اختياري)</p>
+        <input type="text" id="activityInput" placeholder="اكتب أي حاجة... قهوة؟ سينما؟">
+        <div class="examples-row">
+          <button class="chip-btn example-chip" data-text="☕ قهوة" type="button">☕ قهوة</button>
+          <button class="chip-btn example-chip" data-text="🍔 أكل" type="button">🍔 أكل</button>
+          <button class="chip-btn example-chip" data-text="🚗 مشوار" type="button">🚗 مشوار</button>
+          <button class="chip-btn example-chip" data-text="💬 كلام بس" type="button">💬 كلام بس</button>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" id="confirmFreeBtn" type="button">تأكيد أنا فاضي</button>
+          <button class="btn-text" id="cancelFreeBtn" type="button">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">👥 فاضيين دلوقتي (<span id="freeCount">0</span>)</p>
+      <div id="freeList"></div>
+      <p class="empty-note hidden" id="freeEmptyNote">محدش فاضي دلوقتي، كن أول واحد 👆</p>
+    </div>
+
+    <div class="section hidden" id="othersSection">
+      <p class="section-title-small">أعضاء تانيين مش فاضيين دلوقتي</p>
+      <div class="others-row" id="othersList"></div>
+    </div>
+
+    <div class="card hidden" id="leaderboardCard">
+      <p class="section-title">🏆 الأكتر فضا في الشلة</p>
+      <div id="leaderboardList"></div>
+    </div>
+
+  </main>
+
+  <p class="credit">Developed by <strong>Mostafa Nedal</strong></p>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
